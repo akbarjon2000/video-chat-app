@@ -31,10 +31,11 @@ export const Nav = styled.div`
         color: #000000;
     }
     .create-channel-btn{
+       
         display:flex;
         align-items:center;
         justify-content:center;
-        width: 301px;
+        width: ${({ width }) => width};
         height: 63px;
         background: #0060FF;
         border-radius: 15px;
@@ -44,6 +45,7 @@ export const Nav = styled.div`
         font-size: 24px;
         line-height: 31px;
         color: #FFFFFF;
+        cursor: pointer;
     }
-    
+
 `

@@ -1,11 +1,13 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { nav } from '../../../constants/navbar'
 import { Nav } from './Nav-style'
 
-const Navbar = () => {
+const Navbar = (props) => {
+    const navigate = useNavigate()
+    console.log()
     return (
-        <Nav>
+        <Nav width={props.width}>
             <p className='logo'>Agora Meet</p>
             <div style={{ display: "flex", gap: "30px" }}>
                 {nav.map(item => {
@@ -15,7 +17,7 @@ const Navbar = () => {
                     )
                 })}
             </div>
-            <div className='create-channel-btn'>Create A New Channel</div>
+            <div onClick={() => navigate(`/${props.path}`)} className='create-channel-btn'>{props.btntext}</div>
         </Nav>
     )
 }

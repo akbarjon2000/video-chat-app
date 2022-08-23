@@ -112,7 +112,7 @@ const Join = () => {
     // startBasicCall()
     return (
         <Container>
-            <Navbar />
+            <Navbar width="301px" btntext="Create A New Channel" path="create-channel" />
             <JoinDiv>
                 <div>
                     <p className='hero-title'>Yes, You! Confidentially Work From Anywhere</p>

@@ -1,7 +1,16 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import AgoraRTC from "agora-rtc-sdk-ng"
-import { } from "agora-rtc-sdk-ng"
-function VideoCall() {
+import { CreateRoom } from '../../../context/create-room';
+import ConferenceNav from './navbar/Conference-nav';
+import { Container } from './conference-room-style';
+
+const ConferenceRoom = () => {
+    const [channelName, setChannelName] = useContext(CreateRoom);
+    const [join, setJoin] = useState(false);
+    var joinedDiv = document.getElementsByClassName("joined-div");
+    console.log(joinedDiv[0])
+    var notJoinedDiv = document.getElementsByClassName("not-joined-div");
+
     let rtc = {
         localAudioTrack: null,
         localVideoTrack: null,
@@ -13,9 +22,9 @@ function VideoCall() {
         // Set the channel name.
         channel: "test",
         // Pass your temp token here.
-        token: "007eJxTYJh1rS3GKKSy3+58Yez9gLuzM46Hcc09f3Eeg3+EBN+WRcsUGAwtLQzMU8yNTMwskk0sTQwtEs0TzVMNLVISTVJNzU0sdAuYk5cfZElOSOhlZGSAQBCfhaEktbiEgQEAMFsfpg==",
+        token: "007eJxTYCirZb2vudH+s4Zz3Zpfcx+wRZycmNfFG3Sl6V2lzDzHJ60KDIaWFgbmKeZGJmYWySaWJoYWieaJ5qmGFimJJqmm5iYWfKdYknul2ZLdNx5gYmSAQBCfhaEktbiEgQEAQfofXA==",
         // Set the user ID.
-        uid: "Akbarjon"
+        uid: "123456789465321"
     };
 
     async function startBasicCall() {
@@ -62,14 +71,10 @@ function VideoCall() {
                 remotePlayerContainer.remove();
             });
         });
-
-        window.onload = function () {
-
+    };
 
 
-        };
-    }
-    const handleJoin = async () => {
+    const handleJoin = async function () {
         // Join an RTC channel.
         await rtc.client.join(options.appId, options.channel, options.token, options.uid);
         // Create a local audio track from the audio sampled by a microphone.
@@ -82,17 +87,19 @@ function VideoCall() {
         const localPlayerContainer = document.createElement("div");
         // Specify the ID of the DIV container. You can use the uid of the local user.
         localPlayerContainer.id = options.uid;
-        localPlayerContainer.textContent = "Local user " + options.uid;
-        localPlayerContainer.style.width = "640px";
-        localPlayerContainer.style.height = "480px";
-        document.body.append(localPlayerContainer);
-
+        // localPlayerContainer.textContent = "Local user " + options.uid;
+        localPlayerContainer.style.width = "1046px";
+        localPlayerContainer.style.height = "471px";
+        joinedDiv[0].append(localPlayerContainer);
+        notJoinedDiv[0].style.display = "none"
+        joinedDiv[0].style.display = "flex"
         // Play the local video track.
         // Pass the DIV container and the SDK dynamically creates a player in the container for playing the local video track.
         rtc.localVideoTrack.play(localPlayerContainer);
         console.log("publish success!");
-    }
-    const handleLeave = async () => {
+
+    };
+    const handleLeave = async function () {
         // Destroy the local audio and video tracks.
         rtc.localAudioTrack.close();
         rtc.localVideoTrack.close();
@@ -106,19 +113,28 @@ function VideoCall() {
 
         // Leave the channel.
         await rtc.client.leave();
+        joinedDiv[0].style.display = "none"
+        notJoinedDiv[0].style.display = "flex"
 
-    }
+
+    };
     startBasicCall();
+
+    //     window.onload = function () {
+    //     };
+
+
     return (
-        <div>
-            <div className="row">
-                <div>
-                    <button type="button" id="join-video" onClick={handleJoin}>JOIN</button>
-                    <button type="button" id="leave-video" onClick={handleLeave}>LEAVE</button>
-                </div>
+        <Container>
+            <ConferenceNav />
+            <div className='joined-div'></div> :
+            <div className='center not-joined-div'>
+                <button type="button" className='center join-video' onClick={handleJoin}>Start Meeting</button>
             </div>
-        </div>
+
+            <button type="button" id="leave-video" onClick={handleLeave}>LEAVE</button>
+        </Container>
     )
 }
 
-export default VideoCall
+export default ConferenceRoom
