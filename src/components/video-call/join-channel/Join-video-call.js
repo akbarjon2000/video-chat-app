@@ -3,6 +3,7 @@ import AgoraRTC from 'agora-rtc-sdk-ng';
 import axios from "axios"
 import { Container, JoinDiv } from './Join-style';
 import Navbar from '../navbar/Nav';
+import { useNavigate } from 'react-router-dom';
 const Join = () => {
 
     var rtc = {
@@ -108,6 +109,10 @@ const Join = () => {
         });
 
     }
+    const navigate = useNavigate()
+    const handleJoin = () => {
+        navigate("/joined-user");
+    }
 
     // startBasicCall()
     return (
@@ -119,7 +124,7 @@ const Join = () => {
                     <p className='hero-subtitle'>Meetings made more Simpler, Ever Before!</p>
                     <div className='join-panel'>
                         <input className='id-input' placeholder='Enter Channel name or Id' />
-                        <div className='join-btn'>Join Channel</div>
+                        <div className='join-btn' onClick={handleJoin} >Join Channel</div>
                     </div>
                 </div>
                 <img src='./join-page-img.png' />
