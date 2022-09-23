@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect, createRef } from 'react'
 import AgoraRTC from "agora-rtc-sdk-ng"
 import { CreateRoom } from '../../../context/create-room';
 import ConferenceNav from './navbar/Conference-nav';
@@ -7,10 +7,13 @@ import { Container } from './conference-room-style';
 const ConferenceRoom = () => {
     const [channelName, setChannelName] = useContext(CreateRoom);
     const [join, setJoin] = useState(false);
-    var joinedDiv = document.getElementsByClassName("joined-div");
+    var joinedDiv = document.getElementsByClassName("publisher");
+    var audiance = document.getElementsByClassName("audience");
+    var controlls = createRef();
+    console.log("controlls:", controlls)
     console.log(joinedDiv[0])
     var notJoinedDiv = document.getElementsByClassName("not-joined-div");
-
+    let remoteTracks = {}
     let rtc = {
         localAudioTrack: null,
         localVideoTrack: null,
@@ -20,9 +23,9 @@ const ConferenceRoom = () => {
         // Pass your App ID here.
         appId: "19807d72468c49418a7a7e18da4e5748",
         // Set the channel name.
-        channel: "test",
+        channel: "agora-chat",
         // Pass your temp token here.
-        token: "007eJxTYCirZb2vudH+s4Zz3Zpfcx+wRZycmNfFG3Sl6V2lzDzHJ60KDIaWFgbmKeZGJmYWySaWJoYWieaJ5qmGFimJJqmm5iYWfKdYknul2ZLdNx5gYmSAQBCfhaEktbiEgQEAQfofXA==",
+        token: "007eJxTYOB7lPya/YfZ+up1L6c7nd8wV/5ulvOpmpcNt37u69hc0r1YgcHQ0sLAPMXcyMTMItnE0sTQItE80TzV0CIl0STV1NzEItVRN/nRJL3k7AP/GRihEMRnYSjOLclgYAAAURwkdw==",
         // Set the user ID.
         uid: "123456789465321"
     };
@@ -46,9 +49,13 @@ const ConferenceRoom = () => {
                 // Specify the ID of the DIV container. You can use the uid of the remote user.
                 remotePlayerContainer.id = user.uid.toString();
                 remotePlayerContainer.textContent = "Remote user " + user.uid.toString();
-                remotePlayerContainer.style.width = "640px";
-                remotePlayerContainer.style.height = "480px";
-                document.body.append(remotePlayerContainer);
+                remotePlayerContainer.style.width = "256px";
+                remotePlayerContainer.style.height = "150px";
+                audiance[0].append(remotePlayerContainer)
+                audiance[0].style.display = "flex"
+                // if (joinedDiv) {
+                //     joinedDiv.append((remotePlayerContainer))
+                // }
 
                 // Play the remote video track.
                 // Pass the DIV container and the SDK dynamically creates a player in the container for playing the remote video track.
@@ -87,12 +94,17 @@ const ConferenceRoom = () => {
         const localPlayerContainer = document.createElement("div");
         // Specify the ID of the DIV container. You can use the uid of the local user.
         localPlayerContainer.id = options.uid;
+        localPlayerContainer.class = "local-div";
         // localPlayerContainer.textContent = "Local user " + options.uid;
-        localPlayerContainer.style.width = "1046px";
-        localPlayerContainer.style.height = "471px";
+        localPlayerContainer.style.width = "100%";
+        localPlayerContainer.style.height = "100%";
+        localPlayerContainer.style.boxSizing = "border-box";
+        localPlayerContainer.style.borderRadius = "15px";
+        // localPlayerContainer.style.border = "8px solid blue";
         joinedDiv[0].append(localPlayerContainer);
         notJoinedDiv[0].style.display = "none"
         joinedDiv[0].style.display = "flex"
+        controlls.current.style.display = "flex"
         // Play the local video track.
         // Pass the DIV container and the SDK dynamically creates a player in the container for playing the local video track.
         rtc.localVideoTrack.play(localPlayerContainer);
@@ -113,12 +125,15 @@ const ConferenceRoom = () => {
 
         // Leave the channel.
         await rtc.client.leave();
-        joinedDiv[0].style.display = "none"
         notJoinedDiv[0].style.display = "flex"
-
+        joinedDiv[0].style.display = "none"
+        joinedDiv[0].removeChild(document.getElementsByClassName('local-div'))
+        controlls.current.style.display = "none"
 
     };
-    startBasicCall();
+    useEffect(() => {
+        startBasicCall();
+    }, []);
 
     //     window.onload = function () {
     //     };
@@ -127,12 +142,26 @@ const ConferenceRoom = () => {
     return (
         <Container>
             <ConferenceNav />
-            <div className='joined-div'></div> :
-            <div className='center not-joined-div'>
-                <button type="button" className='center join-video' onClick={handleJoin}>Start Meeting</button>
-            </div>
+            <div className='conference-body'>
+                <div className='center not-joined-div'>
+                    <button type="button" className='center join-video' onClick={handleJoin}>Start Meeting</button>
+                </div>
+                <div className='videos-body' ref={controlls} >
+                    <div className='videoframes'>
 
-            <button type="button" id="leave-video" onClick={handleLeave}>LEAVE</button>
+                        <div className='publisher'></div>
+                        <div className='audience'></div>
+                    </div>
+                    <div className='controlls'>
+                        <div id="ctrl-btn" >Video</div>
+                        <div id="ctrl-btn" >Mute</div>
+                        <div id="ctrl-btn" onClick={handleLeave}>Leave</div>
+                    </div>
+                    <div className='sidebar'>
+
+                    </div>
+                </div>
+            </div>
         </Container>
     )
 }
