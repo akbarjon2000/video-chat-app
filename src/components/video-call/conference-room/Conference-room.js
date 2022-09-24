@@ -25,7 +25,7 @@ const ConferenceRoom = () => {
         // Set the channel name.
         channel: "agora-chat",
         // Pass your temp token here.
-        token: "007eJxTYOB7lPya/YfZ+up1L6c7nd8wV/5ulvOpmpcNt37u69hc0r1YgcHQ0sLAPMXcyMTMItnE0sTQItE80TzV0CIl0STV1NzEItVRN/nRJL3k7AP/GRihEMRnYSjOLclgYAAAURwkdw==",
+        token: "007eJxTYBDuO6NRFzDZuNXlrNCFQ6/FZ/+c9Oyb67G83m7Wm5rFma0KDIaWFgbmKeZGJmYWySaWJoYWieaJ5qmGFimJJqmm5iYWj511kxOm6iXnsV1gYIRCEJ+LITE9vyhRNzkjsYSBAQA5eiKl",
         // Set the user ID.
         uid: "123456789465321"
     };
@@ -109,13 +109,16 @@ const ConferenceRoom = () => {
         // Pass the DIV container and the SDK dynamically creates a player in the container for playing the local video track.
         rtc.localVideoTrack.play(localPlayerContainer);
         console.log("publish success!");
+        console.log(rtc.client.localUser)
 
     };
     const handleLeave = async function () {
         // Destroy the local audio and video tracks.
+        const localUser = document.getElementById(rtc.client._uid)
+        localUser.remove()
+        console.log(localUser)
         rtc.localAudioTrack.close();
         rtc.localVideoTrack.close();
-
         // Traverse all remote users.
         rtc.client.remoteUsers.forEach(user => {
             // Destroy the dynamically created DIV containers.
@@ -125,15 +128,16 @@ const ConferenceRoom = () => {
 
         // Leave the channel.
         await rtc.client.leave();
+        controlls.current.style.display = "none"
         notJoinedDiv[0].style.display = "flex"
         joinedDiv[0].style.display = "none"
         joinedDiv[0].removeChild(document.getElementsByClassName('local-div'))
-        controlls.current.style.display = "none"
 
     };
-    useEffect(() => {
-        startBasicCall();
-    }, []);
+
+
+    startBasicCall();
+
 
     //     window.onload = function () {
     //     };

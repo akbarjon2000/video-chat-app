@@ -18,6 +18,7 @@ const JoinedUser = () => {
         // Sets the user role in the channel.
         tokenRole: "audience"
     };
+    const token = "007eJxTYBDuO6NRFzDZuNXlrNCFQ6/FZ/+c9Oyb67G83m7Wm5rFma0KDIaWFgbmKeZGJmYWySaWJoYWieaJ5qmGFimJJqmm5iYWj511kxOm6iXnsV1gYIRCEJ+LITE9vyhRNzkjsYSBAQA5eiKl"
 
     // const uid = uid(16)
     // Fetches a token from the Golang server.
@@ -34,8 +35,8 @@ const JoinedUser = () => {
                 }
             })
                 .then(function (response) {
-                    const token = response.data.rtcToken;
-                    resolve(token);
+                    const token1 = response.data.rtcToken;
+                    resolve(token1);
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -51,7 +52,7 @@ const JoinedUser = () => {
 
         // Fetches a token before calling join to join a channel.
         // let token = await fetchToken(uid, options.channel, options.tokenRole);
-        let token = "007eJxTYOB7lPya/YfZ+up1L6c7nd8wV/5ulvOpmpcNt37u69hc0r1YgcHQ0sLAPMXcyMTMItnE0sTQItE80TzV0CIl0STV1NzEItVRN/nRJL3k7AP/GRihEMRnYSjOLclgYAAAURwkdw=="
+        // let token = "007eJxTYOB7lPya/YfZ+up1L6c7nd8wV/5ulvOpmpcNt37u69hc0r1YgcHQ0sLAPMXcyMTMItnE0sTQItE80TzV0CIl0STV1NzEItVRN/nRJL3k7AP/GRihEMRnYSjOLclgYAAAURwkdw=="
 
         await client.join(options.appId, options.channel, token, uid);
         rtc.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
@@ -97,7 +98,7 @@ const JoinedUser = () => {
         // When token-privilege-will-expire occurs, fetches a new token from the server and call renewToken to renew the token.
         client.on("token-privilege-will-expire", async function () {
             // let token = await fetchToken(uid, options.channel, options.tokenRole);
-            let token = "007eJxTYCjkECrf+/brwwfV7Ae19ms82LN9qpbuU/uQjTdUrk9Ym/ZWgcHQ0sLAPMXcyMTMItnE0sTQItE80TzV0CIl0STV1NzE4vx67WQ/Rt3kjZ/vMTBCIYjPxZCYnl+UqJuckVjCwAAAq5gkDA=="
+            // let token = "007eJxTYOB7lPya/YfZ+up1L6c7nd8wV/5ulvOpmpcNt37u69hc0r1YgcHQ0sLAPMXcyMTMItnE0sTQItE80TzV0CIl0STV1NzEItVRN/nRJL3k7AP/GRihEMRnYSjOLclgYAAAURwkdw=="
             await client.renewToken(token);
         });
 
@@ -105,7 +106,7 @@ const JoinedUser = () => {
         client.on("token-privilege-did-expire", async function () {
             console.log("Fetching the new Token")
             // let token = await fetchToken(uid, options.channel, options.tokenRole);
-            let token = "007eJxTYCjkECrf+/brwwfV7Ae19ms82LN9qpbuU/uQjTdUrk9Ym/ZWgcHQ0sLAPMXcyMTMItnE0sTQItE80TzV0CIl0STV1NzE4vx67WQ/Rt3kjZ/vMTBCIYjPxZCYnl+UqJuckVjCwAAAq5gkDA=="
+            // let token = "007eJxTYCjkECrf+/brwwfV7Ae19ms82LN9qpbuU/uQjTdUrk9Ym/ZWgcHQ0sLAPMXcyMTMItnE0sTQItE80TzV0CIl0STV1NzE4vx67WQ/Rt3kjZ/vMTBCIYjPxZCYnl+UqJuckVjCwAAAq5gkDA=="
             console.log("Rejoining the channel with new Token")
             await rtc.client.join(options.appId, options.channel, token, uid);
         });
