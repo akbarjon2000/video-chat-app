@@ -6,11 +6,13 @@ import { Container, JoinDiv } from './Create-channel-style';
 import Navbar from '../navbar/Nav';
 import { CreateRoom } from '../../../context/create-room';
 import { useNavigate } from 'react-router';
-
+import { FiMenu } from "react-icons/fi"
+import { Sidebar } from '../../../context/sidebar';
 
 function VideoCall() {
 
     const [channelName, setChannelName] = useContext(CreateRoom)
+    const [open, setOpen] = useContext(Sidebar)
     const navigate = useNavigate();
 
 
@@ -22,16 +24,21 @@ function VideoCall() {
         console.log(channelName)
         navigate('/conference-room')
     }
+    const handleSidebar = () => {
+        setOpen(true);
+    }
     return (
         <Container>
-            <Navbar width="343px" btntext="Join an existing Channel?" path="join-channel" />
+            <FiMenu className='menu' onClick={handleSidebar} />
+            <div onClick={() => navigate(`/join-channel`)} className='create-channel'>Join an existing channel?</div>
+            <Navbar width="343px" btntext="Join an existing Channel?" path="join-channel" className="navbar" />
             <JoinDiv>
                 <img src='./create-room.png' />
-                <div className='col-center' style={{ cursor: "pointer" }}>
+                <div className='col-center create-form' style={{ cursor: "pointer" }}>
                     <p className='hero-title'>Create A New Channel Here</p>
                     <form className='join-panel'>
                         <input value={channelName} className='id-input' placeholder='Enter Channel name' required minLength="3" onChange={handleChage} />
-                        <button type="submit" className='create-btn' onClick={handleCreateChannel}>Create New Channel</button>
+                        <button type="submit" className='create-btn' onClick={handleCreateChannel}>Create</button>
                     </form>
                     <p className='set-features'>Set Features for Channel?</p>
                 </div>

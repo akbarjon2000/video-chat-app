@@ -8,6 +8,8 @@ import { nav } from './constants/navbar';
 import CreateRoomProvider from './context/create-room';
 import ConferenceRoom from './components/video-call/conference-room/Conference-room';
 import JoinedUser from './components/video-call/join-channel/joined-user/Joined-user';
+import CreateUserProvider from './context/username';
+import SidebarProvider from './context/sidebar';
 
 // const routes = (
 //   <Route component={App}>
@@ -21,20 +23,25 @@ class App extends React.Component {
     return (
       <div style={{ overflow: "hidden" }}>
         <CreateRoomProvider>
-          <Routes>
-            <Route path="/create-channel" element={<VideoCall />} />
-            <Route path='/' element={<Join />} />
-            <Route path='/join-channel' element={<Join />} />
-            <Route path="/voice" element={<VoiceCall />} />
-            <Route path="/conference-room" element={<ConferenceRoom />} />
-            <Route path="/joined-user" element={<JoinedUser />} />
-            {nav.map(item => {
-              const { path, Element } = item;
-              return (
-                <Route path={path} element={<Element />} />
-              )
-            })}
-          </Routes>
+          <CreateUserProvider>
+            <SidebarProvider>
+
+              <Routes>
+                <Route path="/create-channel" element={<VideoCall />} />
+                <Route path='/' element={<Join />} />
+                <Route path='/join-channel' element={<Join />} />
+                <Route path="/voice" element={<VoiceCall />} />
+                <Route path="/conference-room" element={<ConferenceRoom />} />
+                <Route path="/joined-user" element={<JoinedUser />} />
+                {nav.map(item => {
+                  const { path, Element } = item;
+                  return (
+                    <Route path={path} element={<Element />} />
+                  )
+                })}
+              </Routes>
+            </SidebarProvider>
+          </CreateUserProvider>
         </CreateRoomProvider>
 
       </div>

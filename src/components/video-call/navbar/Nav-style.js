@@ -47,5 +47,27 @@ export const Nav = styled.div`
         color: #FFFFFF;
         cursor: pointer;
     }
-
+    @media screen and (max-width:400px){
+        &{
+            display:${(({ open }) => open ? "flex" : "none")};
+            flex-direction:column;
+            position:absolute;
+            z-index:1;
+            width:100%;
+            height:100vh;
+            justify-content:flex-start;
+            gap:20px;
+            background-color: lightblue;
+            align-items:flex-start;
+            padding-left:10px;
+        }
+        .links{
+            flex-direction:column;
+            gap:10px;
+            align-items:flex-start;
+        }
+        .create-channel-btn{
+            display:none;
+        }
+   }
 `

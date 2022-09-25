@@ -25,7 +25,7 @@ const ConferenceRoom = () => {
         // Set the channel name.
         channel: "agora-chat",
         // Pass your temp token here.
-        token: "007eJxTYBDuO6NRFzDZuNXlrNCFQ6/FZ/+c9Oyb67G83m7Wm5rFma0KDIaWFgbmKeZGJmYWySaWJoYWieaJ5qmGFimJJqmm5iYWj511kxOm6iXnsV1gYIRCEJ+LITE9vyhRNzkjsYSBAQA5eiKl",
+        token: "007eJxTYDgzcULN3uubtXsmCD/g4l2z/bZaVGLc5Mh05WtJ89+KSgkoMFgmJyWamJtZmJgapZgYJVkmppmaGFsmGhoZpJiYGhtZfrU3SC6eaJicN309AyMUgvhcDInp+UWJuskZiSUMDAAAKiH7",
         // Set the user ID.
         uid: "123456789465321"
     };
@@ -51,7 +51,10 @@ const ConferenceRoom = () => {
                 remotePlayerContainer.textContent = "Remote user " + user.uid.toString();
                 remotePlayerContainer.style.width = "256px";
                 remotePlayerContainer.style.height = "150px";
+                remotePlayerContainer.style.borderRadius = "10px";
+                remotePlayerContainer.style.overflow = "hidden";
                 audiance[0].append(remotePlayerContainer)
+                remoteVideoTrack.play(remotePlayerContainer);
                 audiance[0].style.display = "flex"
                 // if (joinedDiv) {
                 //     joinedDiv.append((remotePlayerContainer))
@@ -59,7 +62,6 @@ const ConferenceRoom = () => {
 
                 // Play the remote video track.
                 // Pass the DIV container and the SDK dynamically creates a player in the container for playing the remote video track.
-                remoteVideoTrack.play(remotePlayerContainer);
             }
 
             // If the remote user publishes an audio track.
@@ -145,7 +147,7 @@ const ConferenceRoom = () => {
 
     return (
         <Container>
-            <ConferenceNav />
+            {/* <ConferenceNav /> */}
             <div className='conference-body'>
                 <div className='center not-joined-div'>
                     <button type="button" className='center join-video' onClick={handleJoin}>Start Meeting</button>
@@ -161,9 +163,9 @@ const ConferenceRoom = () => {
                         <div id="ctrl-btn" >Mute</div>
                         <div id="ctrl-btn" onClick={handleLeave}>Leave</div>
                     </div>
-                    <div className='sidebar'>
+                    {/* <div className='sidebar'>
 
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </Container>

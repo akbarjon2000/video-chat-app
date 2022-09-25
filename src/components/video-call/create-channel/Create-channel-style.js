@@ -10,7 +10,7 @@ export const Container = styled.div`
     background: linear-gradient(113.63deg, rgba(0, 255, 255, 0.4) -10.54%, rgba(255, 255, 255, 0.1) 112.17%);
     backdrop-filter: blur(200px);
     overflow:hidden;
-       .line{
+    .line{
         box-sizing:border-box;
         width: 80%;
         height: 0px;
@@ -20,31 +20,106 @@ export const Container = styled.div`
         display:flex;
         justify-content:center;
         /* padding-top:29px; */
-    }
+}
     .learn-more{
         margin-top:29px;
 
         position: absolute;
-font-family: 'DM Sans';
-font-style: normal;
-font-weight: 400;
-font-size: 32px;
-line-height: 42px;
-/* identical to box height */
+        font-family: 'DM Sans';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 32px;
+        line-height: 42px;
+        /* identical to box height */
 
-text-align: center;
+        text-align: center;
 
-color: #000;
+        color: #000;
+        }
+        .menu{
+        display:none;
+        position:absolute;
+        left:10px;
+        top:10px;
+      
+        font-size:30px;
     }
+    @media screen and (max-width:400px){
+        .line{
+            display:none;
+        }
+        img{
+            display:none;
+        }
+        .create-channel-btn{
+            display:flex;
+        }
+        .menu{
+            display:flex;
+        }
+        .hero-title{
+            font-size:30px !important;
+            width:400px !important;
+        }
+        .create-form{
+            width:400px;
+            height:fit-content;
+            align-items:flex-start;
+            gap:20px;
+        }
+        .create-channel{
+            display:flex !important;
+            position:absolute;
+            bottom:50px;
+
+        }
+        
+    }
+    .create-channel{
+
+        display:none;
+        align-items:center;
+        justify-content:center;
+        width: 343px;
+        height: 63px;
+        background: #0060FF;
+        border-radius: 15px;
+        font-family: 'DM Sans', sans-serif;
+        font-style: normal;
+        font-weight: 700;
+        font-size: 24px;
+        line-height: 31px;
+        color: #FFFFFF;
+        cursor: pointer;
+    }
+
     
 `
 
 export const JoinDiv = styled.div`
     width:100%;
-    padding:0 90px 0 90px;
+    padding:0 90px;
     display:flex;
     align-items:center;
     justify-content:space-between;
+    @media screen and (max-width:500px){
+        &{
+            
+            padding:30px 10px !important;
+            align-items:flex-start !important;
+        }
+        .id-input::placeholder{
+            font-size:20px !important;
+        }
+        .join-panel{
+            height:50px !important;
+            width:400px !important;
+        }
+        .create-btn{
+            height:40px !important;
+            width:100px !important;
+        }
+    }
     .hero-title{
         width: 684px;
         font-family: 'Syne';
@@ -135,5 +210,5 @@ export const JoinDiv = styled.div`
         justify-content: center;
         align-items:center;
     }
-    
+
 `
