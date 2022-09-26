@@ -1,19 +1,15 @@
-import React, { useContext, useState, useEffect, createRef } from 'react'
+import React, { createRef } from 'react'
 import AgoraRTC from "agora-rtc-sdk-ng"
-import { CreateRoom } from '../../../context/create-room';
-import ConferenceNav from './navbar/Conference-nav';
 import { Container } from './conference-room-style';
+import axios from 'axios';
 
 const ConferenceRoom = () => {
-    const [channelName, setChannelName] = useContext(CreateRoom);
-    const [join, setJoin] = useState(false);
     var joinedDiv = document.getElementsByClassName("publisher");
     var audiance = document.getElementsByClassName("audience");
     var controlls = createRef();
     console.log("controlls:", controlls)
     console.log(joinedDiv[0])
     var notJoinedDiv = document.getElementsByClassName("not-joined-div");
-    let remoteTracks = {}
     let rtc = {
         localAudioTrack: null,
         localVideoTrack: null,
@@ -23,12 +19,37 @@ const ConferenceRoom = () => {
         // Pass your App ID here.
         appId: "19807d72468c49418a7a7e18da4e5748",
         // Set the channel name.
-        channel: "agora-chat",
+        channel: "family-meet",
         // Pass your temp token here.
-        token: "007eJxTYDgzcULN3uubtXsmCD/g4l2z/bZaVGLc5Mh05WtJ89+KSgkoMFgmJyWamJtZmJgapZgYJVkmppmaGFsmGhoZpJiYGhtZfrU3SC6eaJicN309AyMUgvhcDInp+UWJuskZiSUMDAAAKiH7",
+        tokenRole: "publisher",
         // Set the user ID.
-        uid: "123456789465321"
+        uid: "Akbarjon",
+
     };
+
+    function fetchToken(uid, channelName, tokenRole) {
+
+        return new Promise(function (resolve) {
+            axios.get(`https://rocky-citadel-25721.herokuapp.com/rtc/${channelName}/publisher/uid/${uid}`, {
+                uid: uid,
+                channelName: channelName,
+                role: tokenRole
+            }, {
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                }
+            })
+                .then(function (response) {
+                    // setToken(response.data.rtcToken)
+                    resolve(response.data.rtcToken);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        })
+    }
+
+
 
     async function startBasicCall() {
         // Create an AgoraRTCClient object.
@@ -52,13 +73,10 @@ const ConferenceRoom = () => {
                 remotePlayerContainer.style.width = "256px";
                 remotePlayerContainer.style.height = "150px";
                 remotePlayerContainer.style.borderRadius = "10px";
-                remotePlayerContainer.style.overflow = "hidden";
+                // remotePlayerContainer.style.overflow = "hidden";
                 audiance[0].append(remotePlayerContainer)
                 remoteVideoTrack.play(remotePlayerContainer);
                 audiance[0].style.display = "flex"
-                // if (joinedDiv) {
-                //     joinedDiv.append((remotePlayerContainer))
-                // }
 
                 // Play the remote video track.
                 // Pass the DIV container and the SDK dynamically creates a player in the container for playing the remote video track.
@@ -83,9 +101,13 @@ const ConferenceRoom = () => {
     };
 
 
+
     const handleJoin = async function () {
+        //generate token:
+        const token = await fetchToken(options.uid, options.channel, options.tokenRole)
+        console.log(token)
         // Join an RTC channel.
-        await rtc.client.join(options.appId, options.channel, options.token, options.uid);
+        await rtc.client.join(options.appId, options.channel, token, options.uid);
         // Create a local audio track from the audio sampled by a microphone.
         rtc.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
         // Create a local video track from the video captured by a camera.
@@ -140,14 +162,8 @@ const ConferenceRoom = () => {
 
     startBasicCall();
 
-
-    //     window.onload = function () {
-    //     };
-
-
     return (
         <Container>
-            {/* <ConferenceNav /> */}
             <div className='conference-body'>
                 <div className='center not-joined-div'>
                     <button type="button" className='center join-video' onClick={handleJoin}>Start Meeting</button>
@@ -163,9 +179,6 @@ const ConferenceRoom = () => {
                         <div id="ctrl-btn" >Mute</div>
                         <div id="ctrl-btn" onClick={handleLeave}>Leave</div>
                     </div>
-                    {/* <div className='sidebar'>
-
-                    </div> */}
                 </div>
             </div>
         </Container>

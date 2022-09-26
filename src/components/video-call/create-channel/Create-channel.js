@@ -1,7 +1,4 @@
 import React, { useContext } from 'react'
-import AgoraRTC from "agora-rtc-sdk-ng"
-import { } from "agora-rtc-sdk-ng"
-
 import { Container, JoinDiv } from './Create-channel-style';
 import Navbar from '../navbar/Nav';
 import { CreateRoom } from '../../../context/create-room';

@@ -58,7 +58,7 @@ export const Container = styled.div`
    .audience{
     gap:20px;
     width:90%;
-    height:200px;
+    height:256px;
     display:none;
     justify-content:flex-start;
     margin-top:10px;
@@ -110,5 +110,14 @@ export const Container = styled.div`
     width:30%;
     height:100vh;
    }
-
+   @media screen and (max-width:500px) {
+    .audience{
+      flex-direction:column;
+      overflow:auto;
+      width:100%;
+      height: 512px;
+      align-items:center;
+      box-sizing:border-box;
+    }
+   }
 `

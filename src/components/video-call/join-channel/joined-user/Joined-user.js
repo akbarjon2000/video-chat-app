@@ -1,11 +1,9 @@
-import React, { createRef, useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect } from 'react'
 import AgoraRTC from 'agora-rtc-sdk-ng';
 import axios from "axios"
-import { nanoid } from "nanoid"
 import { CreateUser } from '../../../../context/username';
 import { JoinedUserCon } from './Joined-user-style';
 const JoinedUser = () => {
-    const [count, setCount] = useState(0)
     const [userName, setuserName] = useContext(CreateUser);
     const main = document.getElementsByClassName("main");
     console.log(main)
@@ -18,24 +16,21 @@ const JoinedUser = () => {
         localVideoTrack: null,
         client: null,
     };
-    // const userName = nanoid(16)
-    // const uid = "smthelse"
+
     var options = {
         // Passes your app ID here.
         appId: "19807d72468c49418a7a7e18da4e5748",
         // Sets the channel name.
-        channel: "agora-chat",
+        channel: "family-meet",
         // Sets the user role in the channel.
         tokenRole: "audience"
     };
-    const token = "007eJxTYDgzcULN3uubtXsmCD/g4l2z/bZaVGLc5Mh05WtJ89+KSgkoMFgmJyWamJtZmJgapZgYJVkmppmaGFsmGhoZpJiYGhtZfrU3SC6eaJicN309AyMUgvhcDInp+UWJuskZiSUMDAAAKiH7"
 
-    // const uid = uid(16)
     // Fetches a token from the Golang server.
     function fetchToken(uid, channelName, tokenRole) {
 
         return new Promise(function (resolve) {
-            axios.get(`https://rocky-citadel-25721.herokuapp.com/rtc/${channelName}/host/uid/1`, {
+            axios.get(`https://rocky-citadel-25721.herokuapp.com/rtc/${channelName}/audience/uid/${userName}`, {
                 uid: uid,
                 channelName: channelName,
                 role: tokenRole
@@ -45,8 +40,8 @@ const JoinedUser = () => {
                 }
             })
                 .then(function (response) {
-                    const token1 = response.data.rtcToken;
-                    resolve(token1);
+                    // setToken(response.data.rtcToken)
+                    resolve(response.data.rtcToken);
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -61,8 +56,7 @@ const JoinedUser = () => {
         rtc.client = client
 
         // Fetches a token before calling join to join a channel.
-        // let token = await fetchToken(uid, options.channel, options.tokenRole);
-        // let token = "007eJxTYOB7lPya/YfZ+up1L6c7nd8wV/5ulvOpmpcNt37u69hc0r1YgcHQ0sLAPMXcyMTMItnE0sTQItE80TzV0CIl0STV1NzEItVRN/nRJL3k7AP/GRihEMRnYSjOLclgYAAAURwkdw=="
+        let token = await fetchToken(userName, options.channel, options.tokenRole);
         await client.join(options.appId, options.channel, token, userName);
         rtc.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
         rtc.localVideoTrack = await AgoraRTC.createCameraVideoTrack();
@@ -110,15 +104,14 @@ const JoinedUser = () => {
 
         // When token-privilege-will-expire occurs, fetches a new token from the server and call renewToken to renew the token.
         client.on("token-privilege-will-expire", async function () {
-            // let token = await fetchToken(uid, options.channel, options.tokenRole);
-            // let token = "007eJxTYOB7lPya/YfZ+up1L6c7nd8wV/5ulvOpmpcNt37u69hc0r1YgcHQ0sLAPMXcyMTMItnE0sTQItE80TzV0CIl0STV1NzEItVRN/nRJL3k7AP/GRihEMRnYSjOLclgYAAAURwkdw=="
+            let token = await fetchToken(userName, options.channel, options.tokenRole);
             await client.renewToken(token);
         });
 
         // When token-privilege-did-expire occurs, fetches a new token from the server and call join to rejoin the channel.
         client.on("token-privilege-did-expire", async function () {
             console.log("Fetching the new Token")
-            // let token = await fetchToken(uid, options.channel, options.tokenRole);
+            let token = await fetchToken(userName, options.channel, options.tokenRole);
             // let token = "007eJxTYCjkECrf+/brwwfV7Ae19ms82LN9qpbuU/uQjTdUrk9Ym/ZWgcHQ0sLAPMXcyMTMItnE0sTQItE80TzV0CIl0STV1NzE4vx67WQ/Rt3kjZ/vMTBCIYjPxZCYnl+UqJuckVjCwAAAq5gkDA=="
             console.log("Rejoining the channel with new Token")
             await rtc.client.join(options.appId, options.channel, token, userName);
@@ -171,7 +164,6 @@ const JoinedUser = () => {
     }, [rtc.client])
     return (
         <JoinedUserCon>
-            {/* <div className='reload' onClick={() => { setCount(count + 1) }}>Load Users</div> */}
             <div className='main' ref={main}></div>
             <div className='secondary' ref={secondary}></div>
             <div className='leave' onClick={handleLeave}>Leave</div>

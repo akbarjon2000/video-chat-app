@@ -13,16 +13,15 @@ export const Container = styled.div`
     .line{
         box-sizing:border-box;
         width: 80%;
-        height: 0px;
         border-top: 1px solid #000000;
         position:absolute;
-        bottom:139px;
+        bottom:80px;
         display:flex;
         justify-content:center;
         /* padding-top:29px; */
 }
     .learn-more{
-        margin-top:29px;
+        margin-top:20px;
 
         position: absolute;
         font-family: 'DM Sans';
@@ -44,7 +43,7 @@ export const Container = styled.div`
       
         font-size:30px;
     }
-    @media screen and (max-width:400px){
+    @media screen and (max-width:500px){
         .line{
             display:none;
         }

@@ -49,8 +49,8 @@ export const JoinedUserCon = styled.div`
     @media screen and (max-width: 400px) {
         .secondary{
             flex-direction:column;
-            overflow:auto;
-            /* height:fit-content; */
+            overflow-x:scroll;
+            height:500px;
         }
     }
 `

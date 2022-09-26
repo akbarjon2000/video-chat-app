@@ -47,7 +47,7 @@ export const Nav = styled.div`
         color: #FFFFFF;
         cursor: pointer;
     }
-    @media screen and (max-width:400px){
+    @media screen and (max-width:500px){
         &{
             display:${(({ open }) => open ? "flex" : "none")};
             flex-direction:column;
@@ -60,6 +60,7 @@ export const Nav = styled.div`
             background-color: lightblue;
             align-items:flex-start;
             padding-left:10px;
+            top:0;
         }
         .links{
             flex-direction:column;

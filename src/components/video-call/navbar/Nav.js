@@ -14,7 +14,7 @@ const Navbar = (props) => {
     return (
         <Nav width={props.width} open={open} >
             <FiMenu className='menu' onClick={handleSidebar} />
-            <p className='logo'>Agora Meet</p>
+            <p className='logo'>Family Meet</p>
             <div style={{ display: "flex", gap: "30px" }} className="links">
                 {nav.map(item => {
                     const { id, title, path } = item;

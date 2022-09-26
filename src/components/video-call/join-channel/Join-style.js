@@ -16,13 +16,13 @@ export const Container = styled.div`
         height: 0px;
         border-top: 1px solid #000000;
         position:absolute;
-        bottom:139px;
+        bottom:80px;
         display:flex;
         justify-content:center;
         /* padding-top:29px; */
     }
     .learn-more{
-        margin-top:29px;
+        margin-top:20px;
 
         position: absolute;
         font-family: 'DM Sans';
